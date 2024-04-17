@@ -19,7 +19,7 @@ class BinarySearchTree {
     }
 
     // From an array of non-sorted data creates a sorted array of nodes
-    
+
     buildNodeArray(array) {
         let arrayForTree = this.mergeSort(array);
         let balancedArray = []
@@ -33,16 +33,16 @@ class BinarySearchTree {
         }
         return balancedArray;
     }
-    
+
     //calls insertRec
-    insert(value){
-        this.insertRec(this._root,value)
+    insert(value) {
+        this.insertRec(this._root, value)
     }
 
     // recursively inserts a Node with a data value
     insertRec(root, value) {
         let actualNode = root;
-        
+
         // If the tree is empty, return a new node
         if (actualNode === null) {
             actualNode = new Node(value);
@@ -50,11 +50,11 @@ class BinarySearchTree {
         }
 
         // Otherwise, recur down the tree
-        if(value < actualNode.data){
+        if (value < actualNode.data) {
             actualNode.left = this.insertRec(actualNode.left, value);
-        } else if(value > actualNode.data){
+        } else if (value > actualNode.data) {
             actualNode.right = this.insertRec(actualNode.right, value);
-        } else if(value === actualNode.data){
+        } else if (value === actualNode.data) {
             actualNode.count++;
         }
 
@@ -62,26 +62,22 @@ class BinarySearchTree {
         return actualNode;
     }
 
-    find(value){
-        return this.findRecur(this._root, value)
-    }
-
-    findRecur(root, value){
-        let actualNode = root;
-
-        if(actualNode === null){
-            return null;
+    find(value) {
+        let actualNode = this._root;
+        if (actualNode === null) {
+            return;
         }
-
-        if(actualNode.data === value){
-            return actualNode;
-        } else if(value < actualNode.data){
-            let leftNode = this.findRecur(actualNode.left,value); 
-            return leftNode
-        } else if(value > actualNode.data){
-            let rightNode = this.findRecur(actualNode.right,value);
-            return rightNode;
+        while (actualNode) {
+            if (value < actualNode.data) {
+                actualNode = actualNode.left;
+            }
+            else if (value > actualNode.data) {
+                actualNode = actualNode.right;
+            } else if(actualNode.data === value){
+                return actualNode;
+            }
         }
+        return false;
     }
 
     mergeSort(list) {
@@ -145,4 +141,6 @@ prettyPrint(checkTree._root)
 
 console.log(checkTree.find(23));
 console.log(checkTree.find(4));
+console.log(checkTree.find(999));
 prettyPrint(checkTree._root)
+checkTree.find(4)
