@@ -2,10 +2,12 @@ import Node from './node.js'
 
 class BinarySearchTree {
     constructor(baseArray) {
+        // for getting the first root of the binarySearchTree
         this._root = this.buildTree(this.buildNodeArray(baseArray));
     }
 
-    buildTree(sortedArray){
+    // from an array of sorted nodes builds the tree and returns the root
+    buildTree(sortedArray) {
         if (sortedArray.length === 0) {
             return null;
         }
@@ -16,18 +18,45 @@ class BinarySearchTree {
         return node;
     }
 
+    // From an array of non-sorted data creates a sorted array of nodes
+    
     buildNodeArray(array) {
         let arrayForTree = this.mergeSort(array);
         let balancedArray = []
-        for (let i = 0; i < arrayForTree.length; i++){
+        for (let i = 0; i < arrayForTree.length; i++) {
             let newNodeForBalancedArray = new Node(arrayForTree[i]);
-            while(arrayForTree[i] === arrayForTree[i+1]){
+            while (arrayForTree[i] === arrayForTree[i + 1]) {
                 newNodeForBalancedArray.count++;
                 i++;
             }
             balancedArray.push(newNodeForBalancedArray);
         }
         return balancedArray;
+    }
+    insert(value){
+        this._root = this.insertRec(this._root,value)
+        return; 
+    }
+    insertRec(root, value) {
+        let actualNode = root;
+        
+        // If the tree is empty, return a new node
+        if (actualNode == null) {
+            actualNode = new Node(value);
+            return actualNode;
+        }
+
+        // Otherwise, recur down the tree
+        if(value < actualNode.data){
+            actualNode.left = this.insertRec(actualNode.left, value);
+        } else if(value > actualNode.data){
+            actualNode.right = this.insertRec(actualNode.right, value);
+        } else if(value === actualNode.data){
+            actualNode.count++;
+        }
+
+        // Return the (unchanged) node pointer
+        return actualNode;
     }
 
     mergeSort(list) {
@@ -58,26 +87,31 @@ class BinarySearchTree {
 }
 
 let checkTree = new BinarySearchTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]);
-let checkNode = new Node("3");
 
+checkTree.insert(10);
+checkTree.insert(10);
+checkTree.insert(10);
+checkTree.insert(9);
+console.log(checkTree)
 
 // function to visually see the BST
 
 let prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
-      return;
+        return;
     }
     if (node.right !== null) {
-      prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+        prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
     }
     console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
     if (node.left !== null) {
-      prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+        prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
-  };
+};
 
 prettyPrint(checkTree._root)
 
 //console.log(checkTree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]))
 //console.log(checkTree.buildNodeArray([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]));
 //console.log(checkTree.buildTree(checkTree.buildNodeArray([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324])));
+console.log(checkTree._root.right.left.left);
