@@ -33,15 +33,18 @@ class BinarySearchTree {
         }
         return balancedArray;
     }
+    
+    //calls insertRec
     insert(value){
-        this._root = this.insertRec(this._root,value)
-        return; 
+        this.insertRec(this._root,value)
     }
+
+    // recursively inserts a Node with a data value
     insertRec(root, value) {
         let actualNode = root;
         
         // If the tree is empty, return a new node
-        if (actualNode == null) {
+        if (actualNode === null) {
             actualNode = new Node(value);
             return actualNode;
         }
@@ -57,6 +60,28 @@ class BinarySearchTree {
 
         // Return the (unchanged) node pointer
         return actualNode;
+    }
+
+    find(value){
+        return this.findRecur(this._root, value)
+    }
+
+    findRecur(root, value){
+        let actualNode = root;
+
+        if(actualNode === null){
+            return null;
+        }
+
+        if(actualNode.data === value){
+            return actualNode;
+        } else if(value < actualNode.data){
+            let leftNode = this.findRecur(actualNode.left,value); 
+            return leftNode
+        } else if(value > actualNode.data){
+            let rightNode = this.findRecur(actualNode.right,value);
+            return rightNode;
+        }
     }
 
     mergeSort(list) {
@@ -92,6 +117,9 @@ checkTree.insert(10);
 checkTree.insert(10);
 checkTree.insert(10);
 checkTree.insert(9);
+checkTree.insert(45);
+checkTree.insert(100);
+
 console.log(checkTree)
 
 // function to visually see the BST
@@ -114,4 +142,7 @@ prettyPrint(checkTree._root)
 //console.log(checkTree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]))
 //console.log(checkTree.buildNodeArray([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]));
 //console.log(checkTree.buildTree(checkTree.buildNodeArray([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324])));
-console.log(checkTree._root.right.left.left);
+
+console.log(checkTree.find(23));
+console.log(checkTree.find(4));
+prettyPrint(checkTree._root)
