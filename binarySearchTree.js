@@ -35,7 +35,7 @@ class BinarySearchTree {
     }
 
     //calls insertRec
-    insert(value) {
+    insertNode(value) {
         this.insertRec(this._root, value)
     }
 
@@ -80,6 +80,40 @@ class BinarySearchTree {
         return false;
     }
 
+    deleteNode(value){
+        this.deleteRec(this._root, value);
+    }
+
+    deleteRec(root, value){
+        if (root === null){
+            return root;
+        }
+
+        if(value < root.data){
+            root.left = this.deleteRec(root.left, value);
+        } else if(value > root.data){
+            root.right = this.deleteRec(root.right, value);
+        } else{
+            if(root.left === null){
+                return root.right;
+            }else if(root.right === null){
+                return root.left;
+            }
+            
+            root.data = this.minValue(root.right).data;
+            root.count = this.minValue(root.right).count;
+            root.right = this.deleteRec(root.right, root.data);
+        }
+        return root;
+    }
+
+    minValue(node) {
+        while (node.left !== null) {
+            node = node.left;
+        }
+        return node;
+    }
+
     mergeSort(list) {
         if (list.length <= 1) {
             return list;
@@ -109,12 +143,12 @@ class BinarySearchTree {
 
 let checkTree = new BinarySearchTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]);
 
-checkTree.insert(10);
-checkTree.insert(10);
-checkTree.insert(10);
-checkTree.insert(9);
-checkTree.insert(45);
-checkTree.insert(100);
+checkTree.insertNode(10);
+checkTree.insertNode(10);
+checkTree.insertNode(10);
+checkTree.insertNode(9);
+checkTree.insertNode(45);
+checkTree.insertNode(100);
 
 console.log(checkTree)
 
@@ -142,5 +176,6 @@ prettyPrint(checkTree._root)
 console.log(checkTree.find(23));
 console.log(checkTree.find(4));
 console.log(checkTree.find(999));
+console.log(checkTree.deleteNode(67));
 prettyPrint(checkTree._root)
-checkTree.find(4)
+console.log(checkTree.find(4))
