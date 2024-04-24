@@ -114,6 +114,29 @@ class BinarySearchTree {
         return node;
     }
 
+    levelOrder(){
+        let root = this._root;
+        let queue = [];
+        let dataArray = [];
+
+        if(root === null){
+            return;
+        }
+
+        queue.push(root);
+        while(queue.length){
+            let temp = queue.shift();
+            dataArray.push(temp.data);
+            if(temp.left){
+                queue.push(temp.left);
+            }
+            if(temp.right){
+                queue.push(temp.right);
+            }
+        }
+        return dataArray;
+    }
+
     mergeSort(list) {
         if (list.length <= 1) {
             return list;
@@ -141,16 +164,6 @@ class BinarySearchTree {
     }
 }
 
-let checkTree = new BinarySearchTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]);
-
-checkTree.insertNode(10);
-checkTree.insertNode(10);
-checkTree.insertNode(10);
-checkTree.insertNode(9);
-checkTree.insertNode(45);
-checkTree.insertNode(100);
-
-console.log(checkTree)
 
 // function to visually see the BST
 
@@ -167,11 +180,30 @@ let prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
+let checkTree = new BinarySearchTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]);
+
+
 prettyPrint(checkTree._root)
+
+console.log(checkTree.levelOrder());
 
 //console.log(checkTree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]))
 //console.log(checkTree.buildNodeArray([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]));
 //console.log(checkTree.buildTree(checkTree.buildNodeArray([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324])));
+
+
+
+checkTree.insertNode(10);
+checkTree.insertNode(10);
+checkTree.insertNode(10);
+checkTree.insertNode(9);
+checkTree.insertNode(45);
+checkTree.insertNode(44);
+checkTree.insertNode(43);
+checkTree.insertNode(42);
+checkTree.insertNode(100);
+
+console.log(checkTree)
 
 console.log(checkTree.find(23));
 console.log(checkTree.find(4));
@@ -179,3 +211,5 @@ console.log(checkTree.find(999));
 console.log(checkTree.deleteNode(67));
 prettyPrint(checkTree._root)
 console.log(checkTree.find(4))
+
+console.log(checkTree.levelOrder());
