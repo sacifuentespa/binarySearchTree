@@ -146,6 +146,28 @@ class BinarySearchTree {
         return dataArray;
     }
 
+    inOrderTraverse(){
+        let dataArray = [];
+
+        function traverse(node) {
+            // Base case: if the node is null, return
+            if (node === null) {
+                return;
+            }
+    
+            // Traverse the left subtree
+            traverse(node.left);
+            
+            // Push the data of the current node into the orderedData array
+            dataArray.push(node.data);
+    
+            // Traverse the right subtree
+            traverse(node.right);
+        }
+        traverse(this._root);
+        return dataArray;
+    }
+
     mergeSort(list) {
         if (list.length <= 1) {
             return list;
@@ -174,11 +196,12 @@ class BinarySearchTree {
 }
 
 
-
 let checkTree = new BinarySearchTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]);
 
-
 prettyPrint(checkTree._root)
+
+console.log(checkTree.inOrderTraverse())
+
 
 console.log(checkTree.levelOrder());
 
@@ -213,3 +236,5 @@ function checkCallTree(value) {
 
 console.log(checkTree.levelOrder(checkCallTree));
 prettyPrint(checkTree._root)
+
+console.log(checkTree.inOrderTraverse())
