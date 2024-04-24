@@ -1,4 +1,5 @@
-import Node from './node.js'
+import Node from './node.js';
+import prettyPrint from './prettyPrint.js';
 
 class BinarySearchTree {
     constructor(baseArray) {
@@ -73,33 +74,33 @@ class BinarySearchTree {
             }
             else if (value > actualNode.data) {
                 actualNode = actualNode.right;
-            } else if(actualNode.data === value){
+            } else if (actualNode.data === value) {
                 return actualNode;
             }
         }
         return false;
     }
 
-    deleteNode(value){
+    deleteNode(value) {
         this.deleteRec(this._root, value);
     }
 
-    deleteRec(root, value){
-        if (root === null){
+    deleteRec(root, value) {
+        if (root === null) {
             return root;
         }
 
-        if(value < root.data){
+        if (value < root.data) {
             root.left = this.deleteRec(root.left, value);
-        } else if(value > root.data){
+        } else if (value > root.data) {
             root.right = this.deleteRec(root.right, value);
-        } else{
-            if(root.left === null){
+        } else {
+            if (root.left === null) {
                 return root.right;
-            }else if(root.right === null){
+            } else if (root.right === null) {
                 return root.left;
             }
-            
+
             root.data = this.minValue(root.right).data;
             root.count = this.minValue(root.right).count;
             root.right = this.deleteRec(root.right, root.data);
@@ -114,23 +115,31 @@ class BinarySearchTree {
         return node;
     }
 
-    levelOrder(){
+    levelOrder(callback) {
         let root = this._root;
         let queue = [];
         let dataArray = [];
 
-        if(root === null){
+        if (root === null) {
             return;
         }
 
         queue.push(root);
-        while(queue.length){
+        while (queue.length) {
             let temp = queue.shift();
-            dataArray.push(temp.data);
-            if(temp.left){
+
+            //if there is a callback push in dataArray the result of the callback
+            
+            if (typeof callback === 'function') {
+                dataArray.push(callback(temp));
+            }
+            else {
+                dataArray.push(temp.data);
+            }
+            if (temp.left) {
                 queue.push(temp.left);
             }
-            if(temp.right){
+            if (temp.right) {
                 queue.push(temp.right);
             }
         }
@@ -165,20 +174,6 @@ class BinarySearchTree {
 }
 
 
-// function to visually see the BST
-
-let prettyPrint = (node, prefix = "", isLeft = true) => {
-    if (node === null) {
-        return;
-    }
-    if (node.right !== null) {
-        prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-    }
-    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-    if (node.left !== null) {
-        prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-    }
-};
 
 let checkTree = new BinarySearchTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]);
 
@@ -212,4 +207,9 @@ console.log(checkTree.deleteNode(67));
 prettyPrint(checkTree._root)
 console.log(checkTree.find(4))
 
-console.log(checkTree.levelOrder());
+function checkCallTree(value) {
+    return value.data + 3;
+}
+
+console.log(checkTree.levelOrder(checkCallTree));
+prettyPrint(checkTree._root)
