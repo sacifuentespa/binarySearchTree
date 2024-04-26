@@ -214,6 +214,59 @@ class BinarySearchTree {
         return dataArray;
     }
 
+    height(node) {
+        // Base case: if the node is null, its height is -1 (because there are no edges)
+        if (node === null) {
+            return -1;
+        }
+    
+        // Recursively calculate the height of the left and right subtrees
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+    
+        // Return the maximum height of the left and right subtrees, plus 1 (to account for the edge from the current node to its child)
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    isBalanced(){
+        const leftHeight = this.height(this._root.left);
+        const rightHeight = this.height(this._root.right);
+
+        if(Math.abs(leftHeight-rightHeight)>1){
+            return false;
+        }
+        return true
+    }
+
+    rebalance(){
+        const sortedArray = this.inOrderTraverse();
+        const nodeArray = this.buildNodeArray(sortedArray);
+        this._root = this.buildTree(nodeArray)
+    }
+
+    depth(node) {
+
+        let actualNode = this._root;
+        let depthCalculation = 0;
+
+        if (actualNode === null) {
+            return;
+        }
+        while (actualNode) {
+            if (node.data < actualNode.data) {
+                actualNode = actualNode.left;
+                depthCalculation++;
+            }
+            else if (node.data > actualNode.data) {
+                actualNode = actualNode.right;
+                depthCalculation++;
+            } else if (actualNode.data === node.data) {
+                return depthCalculation;
+            }
+        }
+        return false;
+    }
+
     mergeSort(list) {
         if (list.length <= 1) {
             return list;
@@ -244,18 +297,8 @@ class BinarySearchTree {
 
 let checkTree = new BinarySearchTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]);
 
+console.log(checkTree.isBalanced())
 prettyPrint(checkTree._root)
-
-console.log(checkTree.inOrderTraverse())
-
-
-console.log(checkTree.levelOrder());
-
-//console.log(checkTree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]))
-//console.log(checkTree.buildNodeArray([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324]));
-//console.log(checkTree.buildTree(checkTree.buildNodeArray([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 9, 67, 9, 6345, 324])));
-
-
 
 checkTree.insertNode(10);
 checkTree.insertNode(10);
@@ -269,20 +312,15 @@ checkTree.insertNode(100);
 
 console.log(checkTree)
 
-console.log(checkTree.find(23));
-console.log(checkTree.find(4));
-console.log(checkTree.find(999));
 console.log(checkTree.deleteNode(67));
 prettyPrint(checkTree._root)
-console.log(checkTree.find(4))
+console.log(checkTree.height(checkTree.find(23)))
+console.log(checkTree.depth(checkTree.find(42)))
 
-function checkCallTree(value) {
-    return value.data + 3;
-}
 
-console.log(checkTree.levelOrder(checkCallTree));
 prettyPrint(checkTree._root)
+console.log(checkTree.isBalanced())
+checkTree.rebalance()
+prettyPrint(checkTree._root)
+console.log(checkTree.isBalanced())
 
-console.log(checkTree.inOrderTraverse())
-console.log(checkTree.postOrder())
-console.log(checkTree.preOrder())
