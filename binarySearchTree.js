@@ -167,6 +167,52 @@ class BinarySearchTree {
         traverse(this._root);
         return dataArray;
     }
+    
+    postOrder(){
+        let dataArray = []
+        
+        function traverse(node){
+            // Base case: if the node is null, return
+            if (node === null) {
+                return;
+            }
+    
+            // Traverse the left subtree
+            traverse(node.left);
+    
+            // Traverse the right subtree
+            traverse(node.right);
+                        
+            // Push the data of the current node into the orderedData array
+            dataArray.push(node.data);
+        }
+        traverse(this._root);
+        return dataArray;
+    }
+
+    preOrder(){
+        let dataArray = []
+        
+        function traverse(node){
+            // Base case: if the node is null, return
+            if (node === null) {
+                return;
+            }
+
+            dataArray.push(node.data);
+            
+            // Traverse the left subtree
+            traverse(node.left);
+    
+            // Traverse the right subtree
+            traverse(node.right);
+                        
+            // Push the data of the current node into the orderedData array
+            
+        }
+        traverse(this._root);
+        return dataArray;
+    }
 
     mergeSort(list) {
         if (list.length <= 1) {
@@ -238,3 +284,5 @@ console.log(checkTree.levelOrder(checkCallTree));
 prettyPrint(checkTree._root)
 
 console.log(checkTree.inOrderTraverse())
+console.log(checkTree.postOrder())
+console.log(checkTree.preOrder())
